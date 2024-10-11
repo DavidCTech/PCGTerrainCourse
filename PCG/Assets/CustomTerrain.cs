@@ -16,6 +16,13 @@ public class CustomTerrain : MonoBehaviour
     public Terrain terrain;
     public TerrainData terrainData;
 
+    int hmr { get {  return terrainData.heightmapResolution; } }
+
+    float[,] GetHeights()
+    {
+        return (terrainData.GetHeights(0, 0, hmr, hmr));
+    }
+
     public void OnEnable()
     {
         Debug.Log("Init Terrain Data");
@@ -57,10 +64,10 @@ public class CustomTerrain : MonoBehaviour
 
     public void ResetTerrain()
     {
-        float[,] heightMap = new float[terrainData.heightmapResolution, terrainData.heightmapResolution];
-        /*for (int x = 0; x < terrainData.heightmapResolution; x++)
+        float[,] heightMap = new float[hmr, hmr];
+        /*for (int x = 0; x < hmr; x++)
         {
-            for (int z = 0; z < terrainData.heightmapResolution; z++)
+            for (int z = 0; z < hmr; z++)
             {
                 heightMap[x, z] += 0;
             }
@@ -71,10 +78,10 @@ public class CustomTerrain : MonoBehaviour
 
     public void RandomTerrain()
     {
-        float[,] heightMap = terrainData.GetHeights(0,0, terrainData.heightmapResolution, terrainData.heightmapResolution);
-        for(int x = 0; x < terrainData.heightmapResolution; x++)
+        float[,] heightMap = GetHeights();
+        for(int x = 0; x < hmr; x++)
         {
-            for(int z = 0; z < terrainData.heightmapResolution; z++)
+            for(int z = 0; z < hmr; z++)
             {
                 heightMap[x, z] += UnityEngine.Random.Range(randomHeightRange.x, randomHeightRange.y);
             }
@@ -85,10 +92,10 @@ public class CustomTerrain : MonoBehaviour
     public void LoadTexture()
     {
         float[,] heightMap;
-        heightMap = new float[terrainData.heightmapResolution, terrainData.heightmapResolution];
-        for(int x = 0; x < terrainData.heightmapResolution; x++)
+        heightMap = new float[hmr, hmr];
+        for(int x = 0; x < hmr; x++)
         {
-            for(int z = 0; z < terrainData.heightmapResolution; z++)
+            for(int z = 0; z < hmr; z++)
             {
                 heightMap[x, z] = heightMapImage.GetPixel((int)(x * heightMapScale.x), (int)(z * heightMapScale.z)).grayscale * heightMapScale.y;
             }
